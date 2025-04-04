@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>US Presidential Voting App</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+        }
+        
+        .logo {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 60px;
+            height: auto;
+            z-index: 10;
+        }
+        
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/static/images/home_main.jpg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 120px 0;
+            margin-bottom: 40px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        
+        .welcome-card {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .welcome-title {
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .welcome-text {
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+        
+        .candidate-card {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 30px;
+            height: 100%;
+        }
+        
+        .candidate-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        
+        .candidate-image {
+            height: 250px;
+            object-fit: cover;
+            width: 100%;
+        }
+        
+        .candidate-info {
+            padding: 20px;
+        }
+        
+        .candidate-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--secondary-color);
+        }
+        
+        .candidate-party {
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        
+        .vote-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+        
+        .vote-btn:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .stats-section {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 30px;
+            margin-top: 40px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .stats-title {
+            color: var(--secondary-color);
+            margin-bottom: 30px;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .stats-container {
+            height: 400px;
+            margin-bottom: 30px;
+        }
+        
+        .footer {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 40px 0;
+            margin-top: 60px;
+        }
+        
+        .footer-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .footer-text {
+            opacity: 0.8;
+        }
+        
+        .social-icons {
+            margin-top: 20px;
+        }
+        
+        .social-icons a {
+            color: white;
+            font-size: 1.5rem;
+            margin-right: 15px;
+            transition: color 0.3s ease;
+        }
+        
+        .social-icons a:hover {
+            color: var(--primary-color);
+        }
+        
+        .registration-form {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+        }
+        
+        .form-title {
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .form-control {
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+        }
+        
+        .submit-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            font-weight: 600;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+        
+        .submit-btn:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .democracy-icons {
+            display: flex;
+            justify-content: center;
+            margin: 40px 0;
+        }
+        
+        .democracy-icon {
+            font-size: 2.5rem;
+            margin: 0 20px;
+            color: var(--primary-color);
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section with Logo -->
+    <section class="hero-section">
+        <img src="/static/images/usa_flag.png" alt="USA Flag" class="logo">
+        <div class="container">
+            <h1 class="hero-title">US Presidential Election 2024</h1>
+            <p class="hero-subtitle">Your voice matters. Cast your vote today!</p>
+        </div>
+    </section>
+    
+    <div class="container">
+        <!-- Welcome Message -->
+        <div class="welcome-card">
+            <h2 class="welcome-title">Welcome to the US Presidential Voting Platform</h2>
+            <p class="welcome-text">
+                Democracy is the foundation of our nation. By participating in elections, you're exercising your right to shape the future of our country. 
+                This platform allows you to cast your vote for the presidential candidate of your choice. Your vote is secure, anonymous, and can only be cast once.
+            </p>
+        </div>
+        
+        <!-- Democracy Icons -->
+        <div class="democracy-icons">
+            <i class="fas fa-vote-yea democracy-icon"></i>
+            <i class="fas fa-balance-scale democracy-icon"></i>
+            <i class="fas fa-flag democracy-icon"></i>
+            <i class="fas fa-handshake democracy-icon"></i>
+        </div>
+        
+        <!-- Registration Form -->
+        <div class="registration-form" id="registrationSection">
+            <h3 class="form-title">Register to Vote</h3>
+            <form id="registrationForm">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Your Name</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter your full name" required>
+                </div>
+                <button type="submit" class="submit-btn">Register Now</button>
+            </form>
+        </div>
+        
+        <!-- Voting Section -->
+        <div id="votingSection" style="display: none;">
+            <!-- Candidates Section -->
+            <h2 class="text-center mb-4">Presidential Candidates</h2>
+            <div class="row">
+                {% for candidate in candidates %}
+                <div class="col-md-6 mb-4">
+                    <div class="candidate-card">
+                        <img src="{{ candidate.image_url }}" class="candidate-image" alt="{{ candidate.name }}">
+                        <div class="candidate-info">
+                            <h3 class="candidate-name">{{ candidate.name }}</h3>
+                            <p class="candidate-party">{{ candidate.party }}</p>
+                            <button class="vote-btn w-100 vote-btn" data-candidate-id="{{ candidate.id }}">
+                                <i class="fas fa-vote-yea me-2"></i>Vote for {{ candidate.name }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <!-- Statistics Section -->
+            <div class="stats-section">
+                <h3 class="stats-title">Election Statistics</h3>
+                <div class="stats-container">
+                    <canvas id="statsChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h4 class="footer-title">About This Platform</h4>
+                    <p class="footer-text">
+                        This voting platform was created to demonstrate the democratic process and encourage citizen participation in elections.
+                        Every vote counts, and your participation helps strengthen our democracy.
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <h4 class="footer-title">Connect With Us</h4>
+                    <p class="footer-text">
+                        Follow us on social media to stay updated on election news and results.
+                    </p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-12 text-center">
+                    <p class="footer-text">&copy; 2024 US Presidential Voting Platform. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Toast for notifications -->
+    <div class="toast" id="notificationToast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <strong class="me-auto">Notification</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body"></div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Registration form handling
+        document.getElementById('registrationForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            
+            try {
+                const response = await fetch('/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `name=${encodeURIComponent(name)}`
+                });
+                
+                const data = await response.json();
+                if (data.success) {
+                    showNotification(data.message, 'success');
+                    document.getElementById('registrationSection').style.display = 'none';
+                    document.getElementById('votingSection').style.display = 'block';
+                    updateStatistics();
+                } else {
+                    showNotification(data.message, 'error');
+                }
+            } catch (error) {
+                console.error('Registration error:', error);
+                showNotification('Error during registration', 'error');
+            }
+        });
+
+        // Vote button handling
+        document.querySelectorAll('.vote-btn').forEach(button => {
+            button.addEventListener('click', async () => {
+                const candidateId = button.dataset.candidateId;
+                console.log(`Voting for candidate ID: ${candidateId}`);
+                
+                try {
+                    const response = await fetch('/vote', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: `candidate_id=${candidateId}`
+                    });
+                    
+                    const data = await response.json();
+                    if (data.success) {
+                        showNotification(data.message, 'success');
+                        updateStatistics();
+                        document.querySelectorAll('.vote-btn').forEach(btn => {
+                            btn.disabled = true;
+                        });
+                    } else {
+                        showNotification(data.message, 'error');
+                        
+                        // If voter not found, show registration form again
+                        if (data.message.includes('Please register first') || data.message.includes('Voter not found')) {
+                            document.getElementById('registrationSection').style.display = 'block';
+                            document.getElementById('votingSection').style.display = 'none';
+                        }
+                    }
+                } catch (error) {
+                    console.error('Voting error:', error);
+                    showNotification('Error recording vote', 'error');
+                }
+            });
+        });
+
+        // Statistics chart
+        let statsChart;
+        async function updateStatistics() {
+            try {
+                const response = await fetch('/statistics');
+                const stats = await response.json();
+                
+                const ctx = document.getElementById('statsChart').getContext('2d');
+                
+                if (statsChart) {
+                    statsChart.destroy();
+                }
+                
+                statsChart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: stats.map(s => s.name),
+                        datasets: [{
+                            data: stats.map(s => s.vote_count),
+                            backgroundColor: [
+                                '#3498db',
+                                '#e74c3c',
+                                '#2ecc71',
+                                '#f39c12'
+                            ]
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'right',
+                                labels: {
+                                    font: {
+                                        size: 14
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error('Statistics error:', error);
+                showNotification('Error loading statistics', 'error');
+            }
+        }
+
+        // Notification handling
+        function showNotification(message, type = 'success') {
+            const toast = document.getElementById('notificationToast');
+            const toastBody = toast.querySelector('.toast-body');
+            toastBody.textContent = message;
+            
+            if (type === 'error') {
+                toast.classList.add('bg-danger', 'text-white');
+            } else {
+                toast.classList.remove('bg-danger', 'text-white');
+            }
+            
+            const bsToast = new bootstrap.Toast(toast);
+            bsToast.show();
+        }
+
+        // Initial statistics load
+        updateStatistics();
+    </script>
+</body>
+</html> 
