@@ -89,12 +89,11 @@ votingApp/
 
 ## Deployment Instructions
 
-### Deploying on Ubuntu Server (AWS Lightsail)
+### Simple Deployment on Ubuntu Server (AWS Lightsail)
 
 #### Prerequisites
 - AWS account
 - AWS Lightsail instance (Ubuntu 20.04 LTS or newer)
-- Domain name (optional)
 
 #### Step 1: Create a Lightsail Instance
 1. Log in to the AWS Management Console
@@ -125,9 +124,6 @@ sudo apt install -y python3 python3-pip python3-venv
 # Install PostgreSQL
 sudo apt install -y postgresql postgresql-contrib
 
-# Install Nginx
-sudo apt install -y nginx
-
 # Install Git
 sudo apt install -y git
 ```
@@ -143,9 +139,14 @@ sudo -i -u postgres
 
 # Create a database and user
 psql
-CREATE DATABASE votingapp;
-CREATE USER votinguser WITH PASSWORD 'your_secure_password';
-GRANT ALL PRIVILEGES ON DATABASE votingapp TO votinguser;
+
+#CREATE DATABASE postgres;
+#CREATE USER postgres WITH PASSWORD 'admin';
+
+# Change the password for the postgres user
+ALTER USER postgres WITH PASSWORD 'admin';
+GRANT ALL PRIVILEGES ON DATABASE postgres TO postgres;
+
 \q
 
 # Exit postgres user
@@ -158,7 +159,7 @@ exit
 cd ~
 
 # Clone the repository
-git clone https://github.com/yourusername/votingApp.git
+git clone https://github.com/anishutrains/votingapp.git
 cd votingApp
 ```
 
@@ -171,105 +172,55 @@ source venv/bin/activate
 # Install dependencies
 pip install -r requirements.txt
 
-# Update the config.py file with your database credentials
-nano config.py
-```
+# # Update the config.py file with your database credentials
+# nano config.py
+# ```
 
-Edit the config.py file to include your PostgreSQL credentials:
-```python
-DB_TYPE = 'postgres'
-DB_HOST = 'localhost'
-DB_PORT = '5432'
-DB_NAME = 'votingapp'
-DB_USER = 'votinguser'
-DB_PASSWORD = 'your_secure_password'
-```
+# Edit the config.py file to include your PostgreSQL credentials:
+# ```python
+# DB_TYPE = 'postgres'
+# DB_HOST = 'localhost'
+# DB_PORT = '5432'
+# DB_NAME = 'postgres'
+# DB_USER = 'postgres'
+# DB_PASSWORD = 'admin'
+# ```
 
 #### Step 8: Initialize the Database
-```bash
+
 # Make sure you're in the virtual environment
 source venv/bin/activate
-
 # Run the database initialization script
 python init_db.py
 ```
 
-#### Step 9: Set Up Gunicorn
+#### Step 9: Run the Application
 ```bash
-# Install Gunicorn
-pip install gunicorn
+# Make sure you're in the virtual environment
+source venv/bin/activate
 
-# Create a systemd service file
-sudo nano /etc/systemd/system/votingapp.service
+# Run the application
+python run.py
 ```
+####step 10
 
-Add the following content to the service file:
-```
-[Unit]
-Description=Gunicorn instance to serve voting app
-After=network.target
+1. Go to your Lightsail console
+2. Click on your instance
+3. Go to the "Networking" tab
+4. Under "Firewall", add a new rule:
+5. Application: Custom
+6. Protocol: TCP
+7. Port: 5000
+8. Source: Anywhere (0.0.0.0/0)
+9. Click "Save"
 
-[Service]
-User=ubuntu
-Group=www-data
-WorkingDirectory=/home/ubuntu/votingApp
-Environment="PATH=/home/ubuntu/votingApp/venv/bin"
-ExecStart=/home/ubuntu/votingApp/venv/bin/gunicorn --workers 3 --bind unix:votingapp.sock -m 007 app:app
+#### Step 11: Access Your Application
+1. In the Lightsail console, go to your instance
+2. Click on the "Networking" tab
+3. Find your instance's public IP address
+4. Open a web browser and navigate to `http://YOUR_IP_ADDRESS:5000`
 
-[Install]
-WantedBy=multi-user.target
-```
 
-#### Step 10: Configure Nginx
-```bash
-# Create a new Nginx configuration file
-sudo nano /etc/nginx/sites-available/votingapp
-```
-
-Add the following content:
-```
-server {
-    listen 80;
-    server_name your_domain.com;  # Replace with your domain or IP address
-
-    location / {
-        include proxy_params;
-        proxy_pass http://unix:/home/ubuntu/votingApp/votingapp.sock;
-    }
-
-    location /static {
-        alias /home/ubuntu/votingApp/app/static;
-    }
-}
-```
-
-Enable the site and restart Nginx:
-```bash
-sudo ln -s /etc/nginx/sites-available/votingapp /etc/nginx/sites-enabled
-sudo nginx -t
-sudo systemctl restart nginx
-```
-
-#### Step 11: Start the Application
-```bash
-# Start the Gunicorn service
-sudo systemctl start votingapp
-sudo systemctl enable votingapp
-
-# Check the status
-sudo systemctl status votingapp
-```
-
-#### Step 12: Set Up SSL with Let's Encrypt (Optional)
-```bash
-# Install Certbot
-sudo apt install -y certbot python3-certbot-nginx
-
-# Obtain SSL certificate
-sudo certbot --nginx -d your_domain.com
-
-# Follow the prompts to complete the setup
-```
 
 ### Deploying with Docker
 
@@ -297,7 +248,7 @@ COPY . .
 
 EXPOSE 5000
 
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]
+CMD ["python", "run.py"]
 ```
 
 #### Step 2: Create a Docker Compose File
@@ -322,9 +273,9 @@ services:
       - DB_TYPE=postgres
       - DB_HOST=db
       - DB_PORT=5432
-      - DB_NAME=votingapp
-      - DB_USER=votinguser
-      - DB_PASSWORD=your_secure_password
+      - DB_NAME=postgres
+      - DB_USER=postgres
+      - DB_PASSWORD=admin
     volumes:
       - ./app/static:/app/app/static
 
@@ -333,9 +284,9 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     environment:
-      - POSTGRES_DB=votingapp
-      - POSTGRES_USER=votinguser
-      - POSTGRES_PASSWORD=your_secure_password
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin
 
 volumes:
   postgres_data:
