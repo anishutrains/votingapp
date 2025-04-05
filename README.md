@@ -99,9 +99,9 @@ votingApp/
 1. Log in to the AWS Management Console
 2. Navigate to Lightsail
 3. Click "Create instance"
-4. Choose Ubuntu 20.04 LTS as the blueprint
-5. Select your preferred instance plan (at least 1GB RAM recommended)
-6. Choose your preferred availability zone
+4. Choose availability Zone
+5. Choose Ubuntu 24.04 LTS as the blueprint
+6. Select your preferred instance plan (at least 1GB RAM recommended)
 7. Give your instance a name (e.g., "voting-app")
 8. Click "Create instance"
 
@@ -160,7 +160,7 @@ cd ~
 
 # Clone the repository
 git clone https://github.com/anishutrains/votingapp.git
-cd votingApp
+cd votingapp
 ```
 
 #### Step 7: Set Up the Application
