@@ -89,6 +89,8 @@ votingApp/
 
 6. Access the application at http://localhost:5000
 
+
+
 ## Deployment Instructions
 
 ### Option 1: Deploy on AWS Lightsail (Ubuntu)
@@ -101,7 +103,7 @@ votingApp/
 1. Log in to the AWS Management Console
 2. Navigate to Lightsail
 3. Click "Create instance"
-4. Choose Ubuntu 20.04 LTS as the blueprint
+4. Choose Ubuntu 24.04 LTS as the blueprint
 5. Select your preferred instance plan (at least 1GB RAM recommended)
 6. Give your instance a name (e.g., "voting-app")
 7. Click "Create instance"
@@ -144,8 +146,8 @@ sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD 'admin';"
 cd ~
 
 # Clone the repository
-git clone https://github.com/yourusername/votingApp.git
-cd votingApp
+git clone https://github.com/anishutrains/votingapp.git
+cd votingapp
 ```
 
 #### Step 7: Set Up the Application
@@ -155,28 +157,19 @@ python3 -m venv venv
 source venv/bin/activate
 
 # Install dependencies
-pip install -r requirements.txt
+pip install -r backend/requirements.txt
 ```
 
-#### Step 8: Initialize the Database
-```bash
-# Make sure you're in the virtual environment
-source venv/bin/activate
 
-# Run the database initialization script
-python -m database.init_db
-```
-
-#### Step 9: Run the Application
+#### Step 8: Run the Application
 ```bash
-# Make sure you're in the virtual environment
-source venv/bin/activate
+
 
 # Run the application
 python -m backend.run
 ```
 
-#### Step 10: Configure Firewall
+#### Step 9: Configure Firewall
 1. Go to your Lightsail console
 2. Click on your instance
 3. Go to the "Networking" tab
@@ -271,9 +264,6 @@ docker run -d --name voting-app --network voting-network \
   -e DB_USER=postgres \
   -e DB_PASSWORD=admin \
   voting-app
-
-# Initialize the database
-docker exec -it voting-app python -m database.init_db
 ```
 
 #### Step 3: Access the Application
@@ -304,6 +294,3 @@ This project was developed as a teaching tool to demonstrate the software develo
 4. **Testing**: Ensuring the application works correctly
 5. **Deployment**: Making the application available for use
 
-## License
-
-MIT 
