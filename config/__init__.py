@@ -13,11 +13,11 @@ class Config:
     
     # Database settings
     DB_TYPE = 'postgres'
-    DB_HOST = 'localhost'
-    DB_PORT = 5432
-    DB_NAME = 'postgres'  # Changed to match your existing database name
-    DB_USER = 'postgres'
-    DB_PASSWORD = 'admin'  # Update this to match your PostgreSQL password
+    DB_HOST = os.environ.get('DB_HOST', 'localhost')
+    DB_PORT = int(os.environ.get('DB_PORT', 5432))
+    DB_NAME = os.environ.get('DB_NAME', 'postgres')
+    DB_USER = os.environ.get('DB_USER', 'postgres')
+    DB_PASSWORD = os.environ.get('DB_PASSWORD', 'admin')
     
     # Static files
     STATIC_FOLDER = 'static'
@@ -28,4 +28,6 @@ class Config:
     PERMANENT_SESSION_LIFETIME = 3600  # 1 hour
 
     # Connection string for psycopg2
-    DATABASE_URL = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}" 
+    @property
+    def DATABASE_URL(self):
+        return f"postgresql://{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}" 

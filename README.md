@@ -89,8 +89,6 @@ votingApp/
 
 6. Access the application at http://localhost:5000
 
-
-
 ## Deployment Instructions
 
 ### Option 1: Deploy on AWS Lightsail (Ubuntu)
@@ -103,7 +101,7 @@ votingApp/
 1. Log in to the AWS Management Console
 2. Navigate to Lightsail
 3. Click "Create instance"
-4. Choose Ubuntu 24.04 LTS as the blueprint
+4. Choose Pick your instance image(Linux/Unix)->Ubuntu 24.04 LTS as the blueprint(from Operating System (OS) only)
 5. Select your preferred instance plan (at least 1GB RAM recommended)
 6. Give your instance a name (e.g., "voting-app")
 7. Click "Create instance"
@@ -160,11 +158,8 @@ source venv/bin/activate
 pip install -r backend/requirements.txt
 ```
 
-
 #### Step 8: Run the Application
 ```bash
-
-
 # Run the application
 python -m backend.run
 ```
@@ -223,25 +218,7 @@ docker --version
 docker --version
 ```
 
-#### Step 1: Create a Dockerfile
-Create a file named `Dockerfile` in the root directory of your project:
-
-```dockerfile
-FROM python:3.9-slim
-
-WORKDIR /app
-
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-COPY . .
-
-EXPOSE 5000
-
-CMD ["python", "-m", "backend.run"]
-```
-
-#### Step 2: Build and Run the Application
+#### Step 1: Build and Run the Application
 
 ```bash
 # Build the Docker image
@@ -258,18 +235,13 @@ docker run -d --name postgres-db --network voting-network \
 # Run the application container
 docker run -d --name voting-app --network voting-network \
   -p 5000:5000 \
-  -e DB_HOST=postgres-db \
-  -e DB_PORT=5432 \
-  -e DB_NAME=postgres \
-  -e DB_USER=postgres \
-  -e DB_PASSWORD=admin \
   voting-app
 ```
 
-#### Step 3: Access the Application
+#### Step 2: Access the Application
 Open your web browser and navigate to `http://localhost:5000` to access the application.
 
-#### Step 4: Stop the Containers
+#### Step 3: Stop the Containers
 When you're done, you can stop the containers with:
 ```bash
 docker stop voting-app postgres-db
