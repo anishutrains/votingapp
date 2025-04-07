@@ -218,24 +218,24 @@ docker --version
 docker --version
 ```
 
-#### Step 1: Build and Run the Application
+#### Step 1: clone application , Build and Run the Application
 
 ```bash
+# Clone the repository
+git clone https://github.com/anishutrains/votingapp.git
+cd votingapp
+
 # Build the Docker image
-docker build -t voting-app .
+sudo docker build -t voting-app .
 
 # Create a Docker network
-docker network create voting-network
+sudo docker network create voting-network
 
 # Run PostgreSQL container
-docker run -d --name postgres-db --network voting-network \
-  -e POSTGRES_PASSWORD=admin \
-  postgres:13
+sudo docker run -d --name postgres-db --network voting-network -e POSTGRES_PASSWORD=admin postgres:13
 
 # Run the application container
-docker run -d --name voting-app --network voting-network \
-  -p 5000:5000 \
-  voting-app
+sudo docker run -d --name voting-app --network voting-network -p 5000:5000 voting-app
 ```
 
 #### Step 2: Access the Application
