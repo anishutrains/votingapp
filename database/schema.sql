@@ -31,5 +31,5 @@ CREATE TABLE votes (
 
 -- Insert sample candidates
 INSERT INTO candidates (name, party, image_url) VALUES
-    ('Joe Biden', 'Democratic Party', '/static/images/candidate1.jpg'),
+    ('Kamala Harris', 'Democratic Party', '/static/images/candidate1.jpg'),
     ('Donald Trump', 'Republican Party', '/static/images/candidate2.jpg'); 
