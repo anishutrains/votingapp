@@ -62,7 +62,7 @@ votingApp/
 
 1. Clone the repository:
    ```
-   git clone https://github.com/yourusername/votingApp.git
+   git clone https://github.com/anishutrains/votingapp.git
    cd votingApp
    ```
 
@@ -74,15 +74,12 @@ votingApp/
 
 3. Install dependencies:
    ```
-   pip install -r requirements.txt
+   pip install -r backend/requirements.txt
    ```
 
-4. Set up the database:
-   ```
-   python -m database.init_db
-   ```
 
-5. Run the application:
+
+4. Run the application:
    ```
    python -m backend.run
    ```
